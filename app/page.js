@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { Settings, Code, Lock, Save, Trash2, Plus, Facebook, Link as LinkIcon, Shield } from 'lucide-react';
+import { Settings, Code, Lock, Save, Trash2, Plus, Activity, Link as LinkIcon, Shield } from 'lucide-react';
+
 
 export default function Dashboard() {
   const [password, setPassword] = useState('');
@@ -99,7 +100,7 @@ export default function Dashboard() {
         <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-200 w-full max-w-md">
           <div className="flex flex-col items-center mb-6">
             <div className="bg-blue-600 p-3 rounded-full mb-3">
-              <Facebook className="text-white w-8 h-8" />
+              <Activity className="text-white w-8 h-8" />
             </div>
             <h1 className="text-2xl font-bold text-gray-800">CAPI Administrador</h1>
             <p className="text-gray-500 text-sm mt-1">Integración Meta & MailerLite</p>
@@ -179,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function() {
       {/* Header tipo FB */}
       <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
         <div className="flex items-center space-x-3">
-          <Facebook className="text-blue-600 w-8 h-8" />
+          <Activity className="text-blue-600 w-8 h-8" />
           <h1 className="text-xl font-bold text-gray-800">CAPI Administrador</h1>
         </div>
         <div className="flex items-center space-x-4">
