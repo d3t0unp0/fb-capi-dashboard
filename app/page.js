@@ -31,8 +31,15 @@ export default function Dashboard() {
 
   const checkSetup = async () => {
     try {
-      const res = await fetch('/api/auth/check');
+      const res = await fetch('/api/auth/check', { cache: 'no-store' });
       const data = await res.json();
+      
+      if (!res.ok) {
+        setAppState('error');
+        setMessage({ type: 'error', text: data.error || 'Falta conectar la Base de Datos KV en Vercel.' });
+        return;
+      }
+
       if (data.needsSetup) {
         setAppState('setup');
       } else {
@@ -40,6 +47,7 @@ export default function Dashboard() {
       }
     } catch (error) {
       console.error('Error verificando setup', error);
+      setAppState('error');
       setMessage({ type: 'error', text: 'Error conectando con el servidor' });
     }
   };
@@ -156,6 +164,19 @@ export default function Dashboard() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#f0f2f5]">
         <div className="animate-pulse text-blue-600 font-semibold">Cargando CAPI...</div>
+      </div>
+    );
+  }
+
+  if (appState === 'error') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f0f2f5] p-4">
+        <div className="bg-white p-8 rounded-xl shadow-lg border border-red-200 w-full max-w-md text-center">
+          <Shield className="text-red-500 w-12 h-12 mx-auto mb-4" />
+          <h1 className="text-xl font-bold text-gray-800 mb-2">Error de Configuración</h1>
+          <p className="text-gray-600 mb-4">{message.text}</p>
+          <p className="text-sm text-gray-500 bg-gray-50 p-3 rounded">Asegúrate de ir a Vercel &gt; Storage y crear una base de datos <b>KV (Redis)</b> vinculada a este proyecto.</p>
+        </div>
       </div>
     );
   }
