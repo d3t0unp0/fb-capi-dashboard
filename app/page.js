@@ -380,7 +380,7 @@ export default function Dashboard() {
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
                     placeholder="Pega aquí el token largo generado en Facebook"
                   />
-                  <p className="mt-1 text-xs text-gray-500">Lo encuentras en Configuración > API de conversiones > Generar token de acceso.</p>
+                  <p className="mt-1 text-xs text-gray-500">Lo encuentras en Configuración &gt; API de conversiones &gt; Generar token de acceso.</p>
                 </div>
 
                 <div className="pt-4 border-t border-gray-100 flex justify-end">
@@ -514,7 +514,7 @@ export default function Dashboard() {
                 <h3 className="text-sm font-bold text-yellow-800 mb-1">Paso a paso para MailerLite:</h3>
                 <ol className="list-decimal list-inside text-sm text-yellow-700 space-y-1">
                   <li>Copia el script superior.</li>
-                  <li>Ve a MailerLite &gt; Sites &gt; Site Settings &gt; Analytics & Custom Code.</li>
+                  <li>Ve a MailerLite &gt; Sites &gt; Site Settings &gt; Analytics &amp; Custom Code.</li>
                   <li>Pega el script en la sección <b>Head</b>.</li>
                   <li>¡Listo! El script hará todo el trabajo automáticamente basándose en las reglas que configuraste en la pestaña anterior.</li>
                 </ol>
