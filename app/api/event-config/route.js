@@ -1,6 +1,8 @@
 import { kv } from '@vercel/kv';
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 // Este endpoint es PÚBLICO y es llamado por el script en la landing page
 // Habilitamos CORS para que pueda ser llamado desde los dominios de MailerLite
 const corsHeaders = {
