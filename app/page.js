@@ -512,7 +512,7 @@ export default function Dashboard() {
             <div className="p-8">
               <h2 className="text-xl font-semibold text-gray-800 mb-2">Instalación en MailerLite</h2>
               <p className="text-gray-500 text-sm mb-6">
-                Copia y pega este script universal en el &lt;head&gt; de todas tus páginas de MailerLite. Él se encargará de preguntar a este panel qué evento disparar según la página en la que esté el usuario.
+                Copia y pega este script universal en el &lt;head&gt; de todas tus páginas de MailerLite. <b>Este único script hará 3 cosas por ti:</b> instalará el Píxel de Facebook automáticamente, generará un Event ID para deduplicación, y enviará el evento por la API (CAPI) a Facebook al mismo tiempo. ¡No instales el Píxel manualmente!
               </p>
 
               <div className="bg-gray-900 rounded-lg p-4 relative group">
@@ -537,7 +537,7 @@ export default function Dashboard() {
                   <li>Copia el script superior.</li>
                   <li>Ve a MailerLite &gt; Sites &gt; Site Settings &gt; Analytics &amp; Custom Code.</li>
                   <li>Pega el script en la sección <b>Head</b>.</li>
-                  <li>¡Listo! El script hará todo el trabajo automáticamente basándose en las reglas que configuraste en la pestaña anterior.</li>
+                  <li>¡Listo! El script insertará el Píxel, generará un ID de deduplicación y enviará los eventos a la API automáticamente. Si ya tenías un Píxel de Facebook manual en MailerLite, ¡quítalo para evitar eventos duplicados!</li>
                 </ol>
               </div>
             </div>
