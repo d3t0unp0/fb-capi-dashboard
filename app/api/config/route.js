@@ -2,26 +2,7 @@ import { kv } from '@vercel/kv';
 import { NextResponse } from 'next/server';
 
 // Función auxiliar para verificar la contraseña
-function verifyAuth(req) {
-  const authHeader = req.headers.get('authorization');
-  const envPassword = process.env.ADMIN_PASSWORD;
-
-  if (!envPassword) {
-    // Si no hay contraseña configurada en Vercel, permitimos el acceso por defecto (aunque es peligroso en prod)
-    return true; 
-  }
-
-  if (!authHeader || authHeader !== `Bearer ${envPassword}`) {
-    return false;
-  }
-  return true;
-}
-
 export async function GET(req) {
-  if (!verifyAuth(req)) {
-    return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
-  }
-
   try {
     const pixelId = await kv.get('fb_pixel_id');
     const accessToken = await kv.get('fb_access_token');
@@ -35,10 +16,6 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
-  if (!verifyAuth(req)) {
-    return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
-  }
-
   try {
     const { pixelId, accessToken, rules } = await req.json();
 

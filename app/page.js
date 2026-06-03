@@ -4,9 +4,6 @@ import { Settings, Code, Lock, Save, Trash2, Plus, Activity, Link as LinkIcon, S
 
 
 export default function Dashboard() {
-  const [password, setPassword] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
   const [pixelId, setPixelId] = useState('');
   const [accessToken, setAccessToken] = useState('');
   const [rules, setRules] = useState([]);
@@ -24,28 +21,16 @@ export default function Dashboard() {
     'InitiateCheckout', 'ViewContent', 'Contact', 'Subscribe'
   ];
 
-  const fetchConfig = async (authPass) => {
+  const fetchConfig = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/config', {
-        headers: { 'Authorization': `Bearer ${authPass}` }
-      });
+      const res = await fetch('/api/config');
       
-      if (res.status === 401) {
-        setIsAuthenticated(false);
-        setMessage({ type: 'error', text: 'Contraseña incorrecta' });
-        setLoading(false);
-        return;
-      }
-
       if (res.ok) {
         const data = await res.json();
         setPixelId(data.pixelId || '');
         setAccessToken(data.accessToken || '');
         setRules(data.rules || []);
-        setIsAuthenticated(true);
-        setPassword(authPass); // Guardar para futuras peticiones
-        setMessage({ type: '', text: '' });
       }
     } catch (error) {
       setMessage({ type: 'error', text: 'Error al conectar con la API' });
@@ -53,10 +38,9 @@ export default function Dashboard() {
     setLoading(false);
   };
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    fetchConfig(password);
-  };
+  useEffect(() => {
+    fetchConfig();
+  }, []);
 
   const saveConfig = async () => {
     setLoading(true);
@@ -64,8 +48,7 @@ export default function Dashboard() {
       const res = await fetch('/api/config', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${password}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ pixelId, accessToken, rules })
       });
@@ -93,53 +76,7 @@ export default function Dashboard() {
     setRules(newRules);
   };
 
-  // --- UI del Login ---
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f0f2f5]">
-        <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-200 w-full max-w-md">
-          <div className="flex flex-col items-center mb-6">
-            <div className="bg-blue-600 p-3 rounded-full mb-3">
-              <Activity className="text-white w-8 h-8" />
-            </div>
-            <h1 className="text-2xl font-bold text-gray-800">CAPI Administrador</h1>
-            <p className="text-gray-500 text-sm mt-1">Integración Meta & MailerLite</p>
-          </div>
 
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña Maestra</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Introduce tu contraseña"
-                  required
-                />
-              </div>
-            </div>
-            {message.text && (
-              <div className={`p-3 rounded-md text-sm ${message.type === 'error' ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700'}`}>
-                {message.text}
-              </div>
-            )}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-            >
-              {loading ? 'Verificando...' : 'Acceder'}
-            </button>
-          </form>
-        </div>
-      </div>
-    );
-  }
 
   // --- UI del Dashboard Principal ---
   const currentDomain = typeof window !== 'undefined' ? window.location.origin : '';
