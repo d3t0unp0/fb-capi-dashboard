@@ -1,4 +1,4 @@
-import { kv } from '@vercel/kv';
+import { kv } from '@/app/lib/kv';
 import { NextResponse } from 'next/server';
 
 async function hashPassword(password) {
