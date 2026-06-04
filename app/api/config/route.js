@@ -40,11 +40,13 @@ export async function GET(req) {
     const pixelId = await kv.get('fb_pixel_id');
     const accessToken = await kv.get('fb_access_token');
     const rules = await kv.get('url_rules');
+    const testEventCode = await kv.get('fb_test_event_code');
 
     return NextResponse.json({
       pixelId: pixelId || '',
       accessToken: accessToken || '',
-      rules: rules || []
+      rules: rules || [],
+      testEventCode: testEventCode || ''
     });
   } catch (error) {
     console.error('Error fetching config:', error);
@@ -58,11 +60,17 @@ export async function POST(req) {
   }
 
   try {
-    const { pixelId, accessToken, rules } = await req.json();
+    const { pixelId, accessToken, rules, testEventCode } = await req.json();
 
     await kv.set('fb_pixel_id', pixelId);
     await kv.set('fb_access_token', accessToken);
     await kv.set('url_rules', rules);
+    
+    if (testEventCode) {
+      await kv.set('fb_test_event_code', testEventCode);
+    } else {
+      await kv.del('fb_test_event_code'); // Borrarlo si viene vacío
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {

@@ -10,6 +10,7 @@ export default function Dashboard() {
   
   const [pixelId, setPixelId] = useState('');
   const [accessToken, setAccessToken] = useState('');
+  const [testEventCode, setTestEventCode] = useState('');
   const [rules, setRules] = useState([]);
   
   const [activeTab, setActiveTab] = useState('settings');
@@ -105,6 +106,7 @@ export default function Dashboard() {
         const data = await res.json();
         setPixelId(data.pixelId || '');
         setAccessToken(data.accessToken || '');
+        setTestEventCode(data.testEventCode || '');
         setRules(data.rules || []);
         
         setPassword(authPass); // Guardar para futuras peticiones
@@ -132,7 +134,7 @@ export default function Dashboard() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${password}`
         },
-        body: JSON.stringify({ pixelId, accessToken, rules })
+        body: JSON.stringify({ pixelId, accessToken, testEventCode, rules })
       });
       
       if (res.ok) {
@@ -402,6 +404,21 @@ export default function Dashboard() {
                     placeholder="Pega aquí el token largo generado en Facebook"
                   />
                   <p className="mt-1 text-xs text-gray-500">Lo encuentras en Configuración &gt; API de conversiones &gt; Generar token de acceso.</p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center space-x-2">
+                    <span>Código de Prueba de Eventos (Opcional)</span>
+                    <span className="bg-yellow-100 text-yellow-800 text-xs px-2 py-0.5 rounded-full font-bold">Testing</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={testEventCode}
+                    onChange={(e) => setTestEventCode(e.target.value)}
+                    className="w-full px-4 py-2 border border-yellow-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500 font-mono text-sm bg-yellow-50"
+                    placeholder="Ej. TEST12345"
+                  />
+                  <p className="mt-1 text-xs text-gray-500">Úsalo para verificar eventos en la pestaña "Probar Eventos" de Facebook. <b>¡Bórralo cuando lances a producción!</b></p>
                 </div>
 
                 <div className="pt-4 border-t border-gray-100 flex justify-end">

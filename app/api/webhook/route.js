@@ -18,6 +18,7 @@ export async function POST(req) {
     // Leer credenciales de la base de datos (Vercel KV)
     const PIXEL_ID = await kv.get('fb_pixel_id');
     const ACCESS_TOKEN = await kv.get('fb_access_token');
+    const TEST_EVENT_CODE = await kv.get('fb_test_event_code');
 
     if (!PIXEL_ID || !ACCESS_TOKEN) {
       console.error("Faltan configurar el Pixel ID o el Token en el Dashboard");
@@ -94,6 +95,10 @@ export async function POST(req) {
     }
 
     const fbPayload = { data: [fbPayloadData] };
+    if (TEST_EVENT_CODE) {
+      fbPayload.test_event_code = TEST_EVENT_CODE;
+    }
+
     const fbApiUrl = `https://graph.facebook.com/v19.0/${PIXEL_ID}/events?access_token=${ACCESS_TOKEN}`;
     
     const fbResponse = await axios.post(fbApiUrl, fbPayload);
